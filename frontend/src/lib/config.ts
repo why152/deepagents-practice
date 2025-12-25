@@ -6,16 +6,22 @@ export interface StandaloneConfig {
 
 const CONFIG_KEY = "deep-agent-config";
 
-export function getConfig(): StandaloneConfig | null {
-  if (typeof window === "undefined") return null;
+// Default configuration values
+export const DEFAULT_CONFIG: StandaloneConfig = {
+  deploymentUrl: "http://localhost:2024",
+  assistantId: "agent",
+};
+
+export function getConfig(): StandaloneConfig {
+  if (typeof window === "undefined") return DEFAULT_CONFIG;
 
   const stored = localStorage.getItem(CONFIG_KEY);
-  if (!stored) return null;
+  if (!stored) return DEFAULT_CONFIG;
 
   try {
     return JSON.parse(stored);
   } catch {
-    return null;
+    return DEFAULT_CONFIG;
   }
 }
 

@@ -208,16 +208,12 @@ function HomePageContent() {
   const [configDialogOpen, setConfigDialogOpen] = useState(false);
   const [assistantId, setAssistantId] = useQueryState("assistantId");
 
-  // On mount, check for saved config, otherwise show config dialog
+  // On mount, load config (either saved or default)
   useEffect(() => {
     const savedConfig = getConfig();
-    if (savedConfig) {
-      setConfig(savedConfig);
-      if (!assistantId) {
-        setAssistantId(savedConfig.assistantId);
-      }
-    } else {
-      setConfigDialogOpen(true);
+    setConfig(savedConfig);
+    if (!assistantId) {
+      setAssistantId(savedConfig.assistantId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -239,27 +235,9 @@ function HomePageContent() {
 
   if (!config) {
     return (
-      <>
-        <ConfigDialog
-          open={configDialogOpen}
-          onOpenChange={setConfigDialogOpen}
-          onSave={handleSaveConfig}
-        />
-        <div className="flex h-screen items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold">Welcome to Standalone Chat</h1>
-            <p className="mt-2 text-muted-foreground">
-              Configure your deployment to get started
-            </p>
-            <Button
-              onClick={() => setConfigDialogOpen(true)}
-              className="mt-4"
-            >
-              Open Configuration
-            </Button>
-          </div>
-        </div>
-      </>
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
     );
   }
 

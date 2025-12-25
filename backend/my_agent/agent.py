@@ -67,7 +67,7 @@ For any complex task, you MUST follow this workflow:
 """
 
 
-graph = create_deep_agent(
+agent = create_deep_agent(
     model=_make_llm(),
     tools=ALL_TOOLS,
     system_prompt=SYSTEM_PROMPT,

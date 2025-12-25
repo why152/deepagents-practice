@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { StandaloneConfig } from "@/lib/config";
+import { StandaloneConfig, DEFAULT_CONFIG } from "@/lib/config";
 
 interface ConfigDialogProps {
   open: boolean;
@@ -28,10 +28,10 @@ export function ConfigDialog({
   initialConfig,
 }: ConfigDialogProps) {
   const [deploymentUrl, setDeploymentUrl] = useState(
-    initialConfig?.deploymentUrl || ""
+    initialConfig?.deploymentUrl || DEFAULT_CONFIG.deploymentUrl
   );
   const [assistantId, setAssistantId] = useState(
-    initialConfig?.assistantId || ""
+    initialConfig?.assistantId || DEFAULT_CONFIG.assistantId
   );
   const [langsmithApiKey, setLangsmithApiKey] = useState(
     initialConfig?.langsmithApiKey || ""
