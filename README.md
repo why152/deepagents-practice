@@ -50,6 +50,9 @@ npm run dev
 
 Check `.env.example` in each sub-directory or the root (if applicable) for required environment variables.
 
+
 ## License
 
 This project is licensed under the terms found in the [LICENSE](LICENSE) file.
+
+For third-party software and licenses used in this project, please see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
