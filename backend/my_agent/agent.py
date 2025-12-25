@@ -11,7 +11,7 @@ from my_agent.tools import ALL_TOOLS
 
 def _make_llm() -> ChatOllama:
     # 可用环境变量覆盖：OLLAMA_MODEL / OLLAMA_BASE_URL
-    model = os.getenv("OLLAMA_MODEL", "qwen3:8b")
+    model = os.getenv("OLLAMA_MODEL", "qwen3:0.6b")
     base_url = os.getenv("OLLAMA_BASE_URL")  # e.g. http://127.0.0.1:11434
 
     kwargs = {
