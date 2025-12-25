@@ -44,8 +44,8 @@ def make_backend(runtime):
     )
 
 
-SYSTEM_PROMPT = """You are a highly capable and helpful universal AI assistant.
-Your goal is to provide insightful, accurate, and structured assistance to the user.
+SYSTEM_PROMPT = """You are a highly capable and helpful universal AI assistant Acting as a PLANNER.
+Your goal is to provide insightful, accurate, and structured assistance to the user by PLANNING tasks and DELEGATING them to your executor sub-agent.
 
 ### Long-term Memory:
 - You have access to persistent memory via the `/memories/memories.txt` directory.
@@ -53,23 +53,35 @@ Your goal is to provide insightful, accurate, and structured assistance to the u
 - Use this to store and recall user preferences, project context, or important findings.
 - **Always check `/memories/memories.txt`** at the start of a task to see if there is relevant previous context.
 
-### Planning and Execution:
+### Planning and Execution Workflow:
 For any complex task, you MUST follow this workflow:
-1. **Plan First**: Use the `write_todos` tool to create a structured list of steps.
-2. **Execute**: Perform steps sequentially, reflecting on each result.
-3. **Update Progress**: Mark items as complete using `write_todos`.
-4. **Final Review**: Validate results against the original request.
+1. **Plan**: Use the `write_todos` tool to create a structured list of steps.
+2. **Delegate**: Use the `task` tool to delegate execution of specific steps to the `executor` subagent. 
+   - The `executor` has access to all the actual tools (weather, calculations, data analysis, etc.).
+   - Pass clear, context-rich instructions to the `executor`.
+3. **Review**: Check the output of the `executor` and update your todo list.
+4. **Finalize**: When all steps are complete, provide the final answer to the user.
 
-### Guidelines for Tool Usage:
-- Use custom tools (`validate_user`, `fetch_weather`, `analyze_data`, etc.) when appropriate.
-- Prefer structured data analysis and validation to ensure reliability.
-- Use `now_jst` for any time-sensitive operations in JST.
+### Guidelines:
+- **DO NOT** try to execute specific tools (like `now_jst` or `add`) yourself. You do not have them. DELEGATE them.
+- You ONLY have access to planning tools (`write_todos`) and delegation (`task`).
 """
+
+
+# Define the Executor Sub-agent
+# This agent has the actual tools to do the work.
+executor_subagent = {
+    "name": "executor",
+    "description": "A sub-agent capable of executing specific tools like weather checking, calculations, data analysis, etc.",
+    "system_prompt": "You are a precise executor. Your job is to strictly follow instructions, execute tools, and return the results. Do not plan; just do.",
+    "tools": ALL_TOOLS, 
+}
 
 
 agent = create_deep_agent(
     model=_make_llm(),
-    tools=ALL_TOOLS,
+    tools=[], # Main agent only has built-in methodology tools (todos, file ops, etc.)
+    subagents=[executor_subagent],
     system_prompt=SYSTEM_PROMPT,
     backend=make_backend,
 )
