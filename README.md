@@ -14,6 +14,7 @@ This repository contains both the frontend and backend components of the project
 - Node.js (v18+)
 - Python (3.11+)
 - [Poetry](https://python-poetry.org/) (for backend dependency management)
+- [Langgraph CLI](https://langchain-ai.github.io/langgraph/cloud/reference/cli/) (for running the backend server)
 
 ### Installation
 
@@ -34,8 +35,10 @@ poetry install
 #### Start Backend
 ```bash
 cd backend
-poetry run python my_agent/agent.py # or the appropriate entry point
+langgraph dev
 ```
+
+> **Note**: You need to install the Langgraph CLI to run the server.
 
 #### Start Frontend
 ```bash
